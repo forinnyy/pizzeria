@@ -4,14 +4,23 @@ import lombok.Getter;
 import lombok.SneakyThrows;
 import org.reflections.Reflections;
 import ru.forinnyy.pizzeria.api.repository.ICommandRepository;
+import ru.forinnyy.pizzeria.api.repository.IProductRepository;
 import ru.forinnyy.pizzeria.api.service.ICommandService;
+import ru.forinnyy.pizzeria.api.service.IProductService;
 import ru.forinnyy.pizzeria.api.service.IServiceLocator;
 import ru.forinnyy.pizzeria.command.AbstractCommand;
+import ru.forinnyy.pizzeria.enumerated.ProductType;
+import ru.forinnyy.pizzeria.model.Ingredient;
+import ru.forinnyy.pizzeria.model.Product;
 import ru.forinnyy.pizzeria.repository.CommandRepository;
+import ru.forinnyy.pizzeria.repository.ProductRepository;
 import ru.forinnyy.pizzeria.service.CommandService;
+import ru.forinnyy.pizzeria.service.ProductService;
 import ru.forinnyy.pizzeria.util.InputUtil;
 
 import java.lang.reflect.Modifier;
+import java.util.HashMap;
+import java.util.Map;
 import java.util.Set;
 
 public final class Bootstrap implements IServiceLocator {
@@ -23,6 +32,10 @@ public final class Bootstrap implements IServiceLocator {
     @Getter
     private final ICommandService commandService = new CommandService(commandRepository);
 
+    private final IProductRepository productRepository = new ProductRepository();
+
+    @Getter
+    private final IProductService productService = new ProductService(productRepository);
 
     {
         final Reflections reflections = new Reflections(PACKAGE_COMMANDS);
@@ -49,8 +62,26 @@ public final class Bootstrap implements IServiceLocator {
         abstractCommand.execute();
     }
 
-    public void run() {
+    void initData() {
+        final Ingredient kolbaski = new Ingredient("Kolbaski");
+        final Ingredient testo = new Ingredient("Testo");
+        final Ingredient cheese = new Ingredient("Cheese");
+        final Ingredient water = new Ingredient("Water");
+        final Ingredient sugar = new Ingredient("Sugar");
+        final Map<Ingredient, Integer> pepeIngredients = new HashMap<>();
+        pepeIngredients.put(kolbaski, 100);
+        pepeIngredients.put(testo, 500);
+        pepeIngredients.put(cheese, 100);
+        final Map<Ingredient, Integer> colaIngredients = new HashMap<>();
+        colaIngredients.put(water, 500);
+        colaIngredients.put(sugar, 50);
+        productService.create(ProductType.PIZZA, "PEPERONI", "PIZZA S KOLBASKAMI", pepeIngredients);
+        productService.create(ProductType.DRINK, "COLA", "TASTY BLACK WATER", colaIngredients);
 
+    }
+
+    public void run() {
+        initData();
         while (!Thread.currentThread().isInterrupted()) {
 
             try {

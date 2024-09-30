@@ -1,20 +1,24 @@
 package ru.forinnyy.pizzeria.model;
 
 import lombok.Getter;
+import lombok.NoArgsConstructor;
+import lombok.Setter;
 import ru.forinnyy.pizzeria.enumerated.ProductType;
 
 import java.util.Map;
 
 @Getter
+@Setter
+@NoArgsConstructor
 public final class Product extends AbstractModel {
 
-    private final ProductType productType;
+    private ProductType productType;
 
-    private final String name;
+    private String name;
 
-    private final String description;
+    private String description;
 
-    private final Map<Ingredient, Integer> ingredients;
+    private Map<Ingredient, Integer> ingredients;
 
     public Product(ProductType productType, String name, String description, Map<Ingredient, Integer> ingredients) {
         this.productType = productType;
@@ -25,7 +29,7 @@ public final class Product extends AbstractModel {
 
     @Override
     public String toString() {
-        return "Pizza{" +
+        return "Product{" +
                 "name='" + name + '\'' +
                 ", description='" + description + '\'' +
                 ", ingredients=" + ingredients +
