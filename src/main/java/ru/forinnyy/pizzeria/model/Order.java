@@ -1,21 +1,25 @@
 package ru.forinnyy.pizzeria.model;
 
 import lombok.Getter;
+import lombok.NoArgsConstructor;
+import lombok.Setter;
 import ru.forinnyy.pizzeria.enumerated.OrderPickupType;
 
 import java.util.Date;
 
 @Getter
+@Setter
+@NoArgsConstructor
 public final class Order extends AbstractModel {
 
-    final Product productId;
+    private String productId;
 
-    final Date date = new Date();
+    private final Date date = new Date();
 
-    OrderPickupType orderPickupType;
+    private OrderPickupType orderPickupType;
 
-    public Order(Product pizza, OrderPickupType orderPickupType) {
-        this.productId = pizza;
+    public Order(String productId, OrderPickupType orderPickupType) {
+        this.productId = productId;
         this.orderPickupType = orderPickupType;
     }
 

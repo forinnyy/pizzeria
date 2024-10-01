@@ -3,8 +3,7 @@ package ru.forinnyy.pizzeria.repository;
 import ru.forinnyy.pizzeria.api.repository.IRepository;
 import ru.forinnyy.pizzeria.model.AbstractModel;
 
-import java.util.LinkedHashMap;
-import java.util.Map;
+import java.util.*;
 
 public abstract class AbstractRepository<M extends AbstractModel> implements IRepository<M> {
 
@@ -15,9 +14,13 @@ public abstract class AbstractRepository<M extends AbstractModel> implements IRe
         return model;
     }
 
-    public void list() {
-        System.out.println(models.keySet());
-        System.out.println(models.values());
+    public List<M> list() {
+        List<M> listModels = new LinkedList<>();
+        for (Map.Entry<String, M> entry : models.entrySet()) {
+            M model = entry.getValue();
+            listModels.add(model);
+        }
+        return listModels;
     }
 
 }

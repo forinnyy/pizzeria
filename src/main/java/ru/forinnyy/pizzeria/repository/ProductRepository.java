@@ -5,7 +5,7 @@ import ru.forinnyy.pizzeria.enumerated.ProductType;
 import ru.forinnyy.pizzeria.model.Ingredient;
 import ru.forinnyy.pizzeria.model.Product;
 
-import java.util.Map;
+import java.util.*;
 
 public final class ProductRepository extends AbstractRepository<Product>
         implements IProductRepository {

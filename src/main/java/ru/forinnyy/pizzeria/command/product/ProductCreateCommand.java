@@ -18,8 +18,6 @@ public final class ProductCreateCommand extends AbstractProductCommand {
 
     @Override
     public void execute() {
-        System.out.println("[SYSTEM] CREATE PRODUCT COMMAND [EXECUTED]");
-
         System.out.println("ENTER PRODUCT TYPE: [PIZZA, SNACK, DRINK]");
         final String type = InputUtil.nextLine();
         System.out.println("ENTER PRODUCT NAME: ");

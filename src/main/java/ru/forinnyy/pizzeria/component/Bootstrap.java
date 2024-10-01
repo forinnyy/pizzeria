@@ -4,17 +4,22 @@ import lombok.Getter;
 import lombok.SneakyThrows;
 import org.reflections.Reflections;
 import ru.forinnyy.pizzeria.api.repository.ICommandRepository;
+import ru.forinnyy.pizzeria.api.repository.IOrderRepository;
 import ru.forinnyy.pizzeria.api.repository.IProductRepository;
 import ru.forinnyy.pizzeria.api.service.ICommandService;
+import ru.forinnyy.pizzeria.api.service.IOrderService;
 import ru.forinnyy.pizzeria.api.service.IProductService;
 import ru.forinnyy.pizzeria.api.service.IServiceLocator;
 import ru.forinnyy.pizzeria.command.AbstractCommand;
+import ru.forinnyy.pizzeria.enumerated.OrderPickupType;
 import ru.forinnyy.pizzeria.enumerated.ProductType;
 import ru.forinnyy.pizzeria.model.Ingredient;
 import ru.forinnyy.pizzeria.model.Product;
 import ru.forinnyy.pizzeria.repository.CommandRepository;
+import ru.forinnyy.pizzeria.repository.OrderRepository;
 import ru.forinnyy.pizzeria.repository.ProductRepository;
 import ru.forinnyy.pizzeria.service.CommandService;
+import ru.forinnyy.pizzeria.service.OrderService;
 import ru.forinnyy.pizzeria.service.ProductService;
 import ru.forinnyy.pizzeria.util.InputUtil;
 
@@ -36,6 +41,11 @@ public final class Bootstrap implements IServiceLocator {
 
     @Getter
     private final IProductService productService = new ProductService(productRepository);
+
+    private final IOrderRepository orderRepository = new OrderRepository();
+
+    @Getter
+    private final IOrderService orderService = new OrderService(orderRepository);
 
     {
         final Reflections reflections = new Reflections(PACKAGE_COMMANDS);
@@ -75,9 +85,11 @@ public final class Bootstrap implements IServiceLocator {
         final Map<Ingredient, Integer> colaIngredients = new HashMap<>();
         colaIngredients.put(water, 500);
         colaIngredients.put(sugar, 50);
-        productService.create(ProductType.PIZZA, "PEPERONI", "PIZZA S KOLBASKAMI", pepeIngredients);
-        productService.create(ProductType.DRINK, "COLA", "TASTY BLACK WATER", colaIngredients);
-
+        Product pizza = productService.create(ProductType.PIZZA, "PEPERONI", "PIZZA S KOLBASKAMI", pepeIngredients);
+        Product drink = productService.create(ProductType.DRINK, "COLA", "TASTY BLACK WATER", colaIngredients);
+        orderService.create(pizza.getId(), OrderPickupType.DELIVERY);
+        orderService.create(pizza.getId(), OrderPickupType.DELIVERY);
+        orderService.create(drink.getId(), OrderPickupType.TAKEAWAY);
     }
 
     public void run() {
@@ -88,6 +100,7 @@ public final class Bootstrap implements IServiceLocator {
                 System.out.println("ENTER COMMAND: ");
                 final String command = InputUtil.nextLine();
                 processCommand(command);
+                System.out.println();
                 System.out.println("[SYSTEM] [OK]");
             } catch (RuntimeException e) {
                 System.err.println("[SYSTEM] [ERROR] " + e);

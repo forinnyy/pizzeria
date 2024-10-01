@@ -6,4 +6,6 @@ public interface IServiceLocator {
 
     IProductService getProductService();
 
+    IOrderService getOrderService();
+
 }

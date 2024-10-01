@@ -3,6 +3,8 @@ package ru.forinnyy.pizzeria.service;
 import ru.forinnyy.pizzeria.api.repository.IRepository;
 import ru.forinnyy.pizzeria.model.AbstractModel;
 
+import java.util.List;
+
 public abstract class AbstractService<M extends AbstractModel, R extends IRepository<M>>
     implements IRepository<M> {
 
@@ -18,8 +20,8 @@ public abstract class AbstractService<M extends AbstractModel, R extends IReposi
     }
 
     @Override
-    public void list() {
-        repository.list();
+    public List<M> list() {
+        return repository.list();
     }
 
 }
