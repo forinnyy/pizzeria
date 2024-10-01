@@ -10,4 +10,6 @@ public interface IRepository<M extends AbstractModel> {
 
     List<M> list();
 
+    void clear();
+
 }

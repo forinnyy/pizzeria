@@ -2,13 +2,13 @@ package ru.forinnyy.pizzeria.service;
 
 import ru.forinnyy.pizzeria.api.repository.IProductRepository;
 import ru.forinnyy.pizzeria.api.service.IProductService;
+import ru.forinnyy.pizzeria.api.service.Observer;
 import ru.forinnyy.pizzeria.enumerated.ProductType;
 import ru.forinnyy.pizzeria.model.Ingredient;
+import ru.forinnyy.pizzeria.model.OrderEvent;
 import ru.forinnyy.pizzeria.model.Product;
 
-import java.util.HashSet;
 import java.util.Map;
-import java.util.Set;
 
 public final class ProductService extends AbstractService<Product, IProductRepository>
         implements IProductService {
